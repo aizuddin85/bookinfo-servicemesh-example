@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-v2
+  labels:
+    app: reviews
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v2
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: reviews
+        version: v2
+    spec:
+      serviceAccountName: bookinfo-reviews
+      containers:
+      - name: reviews
+        image: docker.io/maistra/examples-bookinfo-reviews-v2:0.12.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9080
