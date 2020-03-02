@@ -1,18 +1,23 @@
-#!/usr/bin/python
-import os
+from flask import Flask
+from flask import jsonify
 
-virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + '/virtenv/'
-virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
-try:
-    execfile(virtualenv, dict(__file__=virtualenv))
-except IOError:
-    pass
-#
-# IMPORTANT: Put any additional includes below this line.  If placed above this
-# line, it's possible required libraries won't be in your searchable path
-#
 
-# Importing Hello World application
+user1bill = [ {'Due Date': '25th July 2020'},
+          {'Amount' : 'USD 120.25'}
+        ]
 
-from web_app import api as application
+api = Flask(__name__)
+
+
+@api.route("/")
+def home():
+  return "Im serving!"
+
+@api.route("/user1", methods=['GET'])
+def user1info():
+  return jsonify({'userbill' : user1bill})
+
+if __name__ == "__main__":
+  api.run()
+
 
